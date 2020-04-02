@@ -406,7 +406,7 @@ class TransferForm(CustomFormAction):
 
 def get_balance_bank_api():
     """Imagine this calls a bank API to get user balance"""
-    bank_api_amount = 5000
+    bank_api_amount = 5000000
     return bank_api_amount
 
 class ActionAccountBalance(Action):
@@ -414,7 +414,7 @@ class ActionAccountBalance(Action):
         return "action_account_balance"
 
     def run(self, dispatcher, tracker, domain):
-        init_account_balance = int(tracker.get_slot("account_balance"))
+        init_account_balance = get_balance_bank_api()
         amount = tracker.get_slot("amount_transferred")
         if amount:
             amount = int(tracker.get_slot("amount_transferred"))
