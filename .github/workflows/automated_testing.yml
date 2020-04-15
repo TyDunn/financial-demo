@@ -33,5 +33,5 @@ jobs:
     
     - name: Run end-to-end tests
       run: |
-        rasa test --stories tests/test_stories.md --fail-on-prediction-errors
+        rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
     
