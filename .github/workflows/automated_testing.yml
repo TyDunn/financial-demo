@@ -1,0 +1,37 @@
+name: Automated testing
+
+on:
+  pull_request:
+    branches: master 
+
+jobs:
+  continuous-integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Rasa Open Source
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Validate data and ensure stories are consistent
+      run: |
+        rasa data validate stories --max-history 5 --fail-on-warning
+    
+    - name: Train model
+      run: |
+        rasa train
+    
+    - name: Run end-to-end tests
+      run: |
+        rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
+    
