@@ -21,7 +21,7 @@ jobs:
     - name: Install Rasa Open Source
       run: |
         python -m pip install --upgrade pip
-        pip install rasa
+        pip install -r requirements.txt
     
     - name: Check stories are consistent
       run: |
