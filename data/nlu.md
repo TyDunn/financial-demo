@@ -8,6 +8,7 @@
 - yeah
 - yes please
 - yes plz
+- for sure
 
 ## intent:ask_transfer_charge
 - Will I be charged for transferring money
