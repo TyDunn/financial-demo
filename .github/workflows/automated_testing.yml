@@ -1,4 +1,5 @@
-name: Automated testing
+# https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/
+name: CI/CD with Rasa example
 
 on:
   pull_request:
@@ -6,6 +7,7 @@ on:
 
 jobs:
   continuous-integration:
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#continuous-integration-ci
     name: Continuous Integration
     runs-on: ubuntu-latest
 
@@ -18,20 +20,24 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Install Rasa Open Source
+    - name: Install Rasa Open Source and dependecies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        python -m spacy download en_core_web_md 
     
-    - name: Validate data and ensure stories are consistent
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#validate-data-and-stories
+    - name: Validate data and stories
       run: |
         rasa data validate stories --max-history 5 --fail-on-warning
     
-    - name: Train model
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#train-a-model
+    - name: Train a model
       run: |
         rasa train
     
-    - name: Run end-to-end tests
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#test-the-assistant
+    - name: Test the assistant
       run: |
         rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
     
