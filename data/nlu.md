@@ -29,6 +29,16 @@
 - what is my account balance
 - what's my account balance?
 - what's my account balance
+- I need to know my balance
+- what is my balance on my main account
+- check my balance
+- check my accounts
+- I want to access my account
+- [balance](payment_amount) summary
+- [balance](payment_amount)
+- check [balance](payment_amount)
+- My accou.t [balance](payment_amount)
+- Give me my [balance](payment_amount)
 
 ## intent:check_earnings
 - How much money went into my account last month?
