@@ -33,7 +33,6 @@
     - form{"name":null}
     - slot{"requested_slot":null}
 
-
 ## pay credit card and check account balance inside form
 * pay_cc: i want to pay off my [justice bank](credit_card) credit card
     - slot{"credit_card":"justice bank"}
@@ -123,7 +122,6 @@
 * thankyou: thank you
     - utter_noworries
 
-
 ## search transactions happy path no greet or thanks
 * check_earnings: how much did I earn [in Jan 2019](time:2019-01-01T00:00:00.000-08:00)?
     - slot{"time":"2020-01-01T00:00:00.000-08:00"}
@@ -136,8 +134,6 @@
     - slot{"search_type":"deposit"}
     - form{"name":null}
     - slot{"requested_slot":null}
-
-
 
 ## search transactions switch to transfer money, deny
 * check_earnings: how much did i earn?
@@ -193,6 +189,7 @@
 
 
 <!--This story is not working; once it goes back to transact_search_form it just does action_listen and doesn't prompt for anything-->
+
 ## search transactions switch to transfer money
 * search_transactions: I want to search my spending history
     - transact_search_form
@@ -232,3 +229,11 @@
     - slot{"transact_grain":"month"}
     - form{"name":null}
     - slot{"requested_slot":null}
+
+## Story from conversation with 2971792e0cc649e6b09c2faa3e201912 on April 21st 2020
+
+* greet: Hi financial demo!
+    - action_default_fallback
+* check_balance: What is my acccount [balance](payment_amount)?
+    - slot{"payment_amount":"balance"}
+    - action_account_balance
