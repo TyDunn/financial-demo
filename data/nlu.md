@@ -34,7 +34,7 @@
 - check my balance
 - check my accounts
 - I want to access my account
-- [balance](payment_amount) summary
+- balance summary
 - [balance](payment_amount)
 - check [balance](payment_amount)
 - My accou.t [balance](payment_amount)
