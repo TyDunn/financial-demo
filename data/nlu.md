@@ -29,6 +29,7 @@
 - what is my account balance
 - what's my account balance?
 - what's my account balance
+- What is my acccount [balance](payment_amount)?
 
 ## intent:check_earnings
 - How much money went into my account last month?
@@ -66,6 +67,7 @@
 - hey
 - good evening
 - hello
+- Hi financial demo!
 
 ## intent:inform
 - $10
