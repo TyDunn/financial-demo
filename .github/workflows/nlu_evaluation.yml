@@ -8,7 +8,7 @@ on:
 jobs:
   nlu-evaluation:
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#continuous-integration-ci
-    name: Continuous Integration
+    name: Add NLU evaluation artifact to PR
     runs-on: ubuntu-latest
     # Only run when `nlu-evaluation` label is added to a pull request
     if: contains(github.event.pull_request.labels.*.name, 'nlu-evaluation')
@@ -24,18 +24,16 @@ jobs:
 
     - name: Install Rasa Open Source and dependecies
       run: |
-        # python -m pip install --upgrade pip
-        # pip install -r requirements.txt
-        # pip install pytablewriter==0.46.1
-        # python -m spacy download en_core_web_md
-        echo "Hello"
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytablewriter==0.46.1
+        python -m spacy download en_core_web_md
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#compare-nlu-performance
     - name: Cross-validate NLU model
       run: |
-        # rasa test nlu -f 5 --cross-validation
-        # python .github/workflows/format_results.py
-        echo "test comment on PR" > results.md
+        rasa test nlu -f 5 --cross-validation
+        python .github/workflows/format_results.py
         
     - name: Post cross-validation results to pull request
       uses: machine-learning-apps/pr-comment@master
