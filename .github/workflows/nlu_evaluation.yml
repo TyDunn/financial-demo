@@ -34,11 +34,10 @@ jobs:
       run: |
         rasa test nlu -f 5 --cross-validation
         python format_results.py
-
+        
     - name: Post cross-validation results to pull request
-      uses: tydunn/comment-on-pr@comment-file-contents
-      if: github.event_name == 'pull_request'
+      uses: machine-learning-apps/pr-comment@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        msg: results.md
+        path: results.md
