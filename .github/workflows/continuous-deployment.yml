@@ -1,0 +1,68 @@
+# https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/
+name: CD with Rasa example
+
+on:
+  push:
+    branches: master
+
+jobs:
+  continuous-deployment:
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#continuous-deployment-cd
+    name: Continuous Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Rasa Open Source and dependecies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        python -m spacy download en_core_web_md 
+    
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#validate-data-and-stories
+    - name: Validate data and stories
+      run: |
+        rasa data validate stories --max-history 5 --fail-on-warning
+    
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#train-a-model
+    - name: Train a model
+      run: |
+        pip install json
+        model_name=$(curl GET https://${{ secrets.RASA_X_URL }}/models?api_token=${{ secrets.RASA_X_API_TOKEN }} | python count_size.py)
+        rasa train --fixed-model-name model_name
+    
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#test-the-assistant
+    - name: Test the assistant
+      run: |
+        rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
+    
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#deploy-your-rasa-model
+    - name: Uplaod model to Rasa X
+      run: |
+        curl -k -F "model=@models/my_model.tar.gz" "https://example.rasa.com/api/projects/default/models?api_token={your_api_token}"
+    
+    # Update action server image step 1
+    - name: Login to DockerHub Registry
+      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin || true
+
+    # Update action server image step 2
+    - name: Pull latest${{ matrix.image.tag_ext }} Docker image for caching
+      run: docker pull rasa/financial-demo:latest || true
+      
+    # Update action server image step 3
+    - name: Build latest${{ matrix.image.tag_ext }} Docker image
+      run: docker build . --tag tydunn/financial-demo:latest --cache-from tydunn/financial-demo:latest
+
+    # Update action server image step 4
+    - name: Push image with latest tag
+      run: docker push tydunn/financial-demo:latest
+
+    # Update action server image step 5
+    # Don't forget to update your Rasa X deployment to use the latest action server image
