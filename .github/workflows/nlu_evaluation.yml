@@ -1,0 +1,44 @@
+# https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/
+name: NLU evaluation with Rasa example
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  nlu-evaluation:
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#continuous-integration-ci
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    # Only run when `nlu-evaluation` label is added to a pull request
+    if: contains(github.event.pull_request.labels.*.name, 'nlu-evaluation')
+    
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Rasa Open Source and dependecies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytablewriter==0.46.1
+        python -m spacy download en_core_web_md 
+    
+    # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#compare-nlu-performance
+    - name: Cross-validate NLU model
+      run: |
+        rasa test nlu -f 5 --cross-validation
+        python format_results.py
+
+    - name: Post cross-validation results to pull request
+      uses: tydunn/comment-on-pr@comment-file-contents
+      if: github.event_name == 'pull_request'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        msg: results.md
