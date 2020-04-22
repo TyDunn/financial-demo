@@ -32,8 +32,9 @@ jobs:
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#compare-nlu-performance
     - name: Cross-validate NLU model
       run: |
-        rasa test nlu -f 5 --cross-validation
-        python format_results.py
+        # rasa test nlu -f 5 --cross-validation
+        # python .github/workflows/format_results.py
+        echo "test comment on PR" > results.md
         
     - name: Post cross-validation results to pull request
       uses: machine-learning-apps/pr-comment@master
