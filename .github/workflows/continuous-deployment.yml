@@ -27,42 +27,43 @@ jobs:
         python -m spacy download en_core_web_md 
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#validate-data-and-stories
-    - name: Validate data and stories
-      run: |
-        rasa data validate stories --max-history 5 --fail-on-warning
+    # - name: Validate data and stories
+    #  run: |
+    #    rasa data validate stories --max-history 5 --fail-on-warning
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#train-a-model
     - name: Train a model
       run: |
-        pip install json
-        model_name=$(curl GET https://${{ secrets.RASA_X_URL }}/models?api_token=${{ secrets.RASA_X_API_TOKEN }} | python count_size.py)
         rasa train --fixed-model-name model_name
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#test-the-assistant
-    - name: Test the assistant
-      run: |
-        rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
+    # - name: Test the assistant
+    #  run: |
+    #    rasa test --stories tests/conversation_tests.md --fail-on-prediction-errors
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#deploy-your-rasa-model
-    - name: Uplaod model to Rasa X
+    - name: Upload model to Rasa X
+      env:
+        RASA_X_URL: ${{ secrets.RASA_X_URL }}
+        RASA_X_API_TOKEN: ${{ secrets.RASA_X_API_TOKEN }}
       run: |
-        curl -k -F "model=@models/my_model.tar.gz" "https://example.rasa.com/api/projects/default/models?api_token={your_api_token}"
+        curl -k -F "model=@models/model_name.tar.gz" "https://$RASA_X_URL/api/projects/default/models?api_token=$RASA_X_API_TOKEN"
     
     # Update action server image step 1
-    - name: Login to DockerHub Registry
-      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin || true
+    # - name: Login to DockerHub Registry
+    # run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin || true
 
     # Update action server image step 2
-    - name: Pull latest${{ matrix.image.tag_ext }} Docker image for caching
-      run: docker pull rasa/financial-demo:latest || true
+    # - name: Pull latest${{ matrix.image.tag_ext }} Docker image for caching
+    #  run: docker pull rasa/financial-demo:latest || true
       
     # Update action server image step 3
-    - name: Build latest${{ matrix.image.tag_ext }} Docker image
-      run: docker build . --tag tydunn/financial-demo:latest --cache-from tydunn/financial-demo:latest
+    # - name: Build latest${{ matrix.image.tag_ext }} Docker image
+    #  run: docker build . --tag tydunn/financial-demo:latest --cache-from tydunn/financial-demo:latest
 
     # Update action server image step 4
-    - name: Push image with latest tag
-      run: docker push tydunn/financial-demo:latest
+    # - name: Push image with latest tag
+    #  run: docker push tydunn/financial-demo:latest
 
     # Update action server image step 5
     # Don't forget to update your Rasa X deployment to use the latest action server image
