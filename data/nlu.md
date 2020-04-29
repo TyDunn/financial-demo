@@ -1,14 +1,3 @@
-## intent:affirm
-- indeed
-- correct
-- that sounds good
-- yes
-- of course
-- yup
-- yeah
-- yes please
-- yes plz
-
 ## intent:ask_transfer_charge
 - Will I be charged for transferring money
 - do transfers cost something?
