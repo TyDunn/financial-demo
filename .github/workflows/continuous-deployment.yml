@@ -34,7 +34,7 @@ jobs:
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#train-a-model
     - name: Train a model
       run: |
-        rasa train --fixed-model-name model_name
+        rasa train
     
     # https://rasa.com/docs/rasa/user-guide/setting-up-ci-cd/#test-the-assistant
     # - name: Test the assistant
@@ -47,7 +47,8 @@ jobs:
         RASA_X_URL: ${{ secrets.RASA_X_URL }}
         RASA_X_API_TOKEN: ${{ secrets.RASA_X_API_TOKEN }}
       run: |
-        curl -k -F "model=@models/model_name.tar.gz" "https://$RASA_X_URL/api/projects/default/models?api_token=$RASA_X_API_TOKEN"
+        export MODEL_NAME=`ls models | head -n 1`
+        curl -k -F "model=@models/$MODEL_NAME" "https://$RASA_X_URL/api/projects/default/models?api_token=$RASA_X_API_TOKEN"
     
     # Update action server image step 1
     # - name: Login to DockerHub Registry
