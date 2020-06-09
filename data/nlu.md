@@ -57,6 +57,8 @@
 - hello
 - Heyyy
 - Hi
+- Hello
+- yo
 
 ## intent:inform
 - $10
