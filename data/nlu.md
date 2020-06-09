@@ -39,6 +39,7 @@
 - no way
 - nope
 - no thanks
+- yo
 
 ## intent:goodbye
 - see you later
@@ -57,6 +58,7 @@
 - hello
 - Heyyy
 - Hi
+- Hello
 
 ## intent:inform
 - $10
