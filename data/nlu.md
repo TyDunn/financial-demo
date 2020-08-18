@@ -195,4 +195,4 @@
 - can I transfer money to my mom
 - I want to pay Bill
 - pay my friend
-- transfer money
+- transfer money please
