@@ -196,3 +196,9 @@
 - I want to pay Bill
 - pay my friend
 - transfer money
+
+## intent:ask_help
+- What can you help me with?
+- What can you do?
+- Idk. What can you do?
+- Can you tell me what you can do?

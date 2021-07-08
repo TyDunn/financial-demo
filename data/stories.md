@@ -31,7 +31,6 @@
     - cc_payment_form
     - form{"name": null}
 
-
 ## pay cc happy path no greet
 * pay_cc
     - cc_payment_form
@@ -39,7 +38,6 @@
     - form{"name": null}
 * thankyou
     - utter_noworries
-
 
 ## pay credit card happy path
 * greet
@@ -98,8 +96,6 @@
     - form{"name": "transact_search_form"}
     - form{"name": null}
 
-
-
 ## search transactions switch to transfer money
 * search_transactions OR check_earnings
     - transact_search_form
@@ -140,3 +136,10 @@
     - utter_ask_back_to_transact
 * deny
     - utter_ok
+
+## Story from conversation with aced1343-87f4-4894-9271-3683982b5cd0 on April 21st 2020
+
+* greet
+    - utter_greet
+* ask_help
+    - utter_ask_help
