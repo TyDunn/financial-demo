@@ -47,6 +47,7 @@
 - quit
 - stop
 - bye
+- Bye
 
 ## intent:greet
 - good morning
